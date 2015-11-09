@@ -121,13 +121,16 @@ hdfs dfs -ls /user/cloudera/output_new
 Look at the files there and check out the contents, e.g.:
 ```
 hdfs dfs -cat /user/cloudera/output_new/part-r-00000
+
 ```
 
 ### 10. Streaming options:
 
 Try:
 
-```hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar --help
+```
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar --help
+
 ```
 
 or see [hadoop.apache.org/docs/r1.2.1/](hadoop.apache.org/docs/r1.2.1/)
@@ -135,12 +138,14 @@ or see [hadoop.apache.org/docs/r1.2.1/](hadoop.apache.org/docs/r1.2.1/)
 Let’s change the number of reduce tasks to see its effects. **Setting it to 0 will execute no reducer and only produce the map output.** (Note the output directory is changed in the snippet below because Hadoop doesn’t like to overwrite output)
 
 ```
+
 hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
    -input /user/cloudera/input \
    -output /user/cloudera/output_new_0 \
    -mapper /home/cloudera/wordcount_mapper.py \
    -reducer /home/cloudera/wordcount_reducer.py \
    -numReduceTasks 0
+
  ```
 
  Get the output file from this run, and then upload it:
@@ -150,4 +155,5 @@ hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
 
  ```
 
-###11. Change the number of reducers to 2 and answer the related quiz question at the end of the video lesson
+###11. Change the number of reducers to 2
+Answer the related quiz question at the end of the video lesson
