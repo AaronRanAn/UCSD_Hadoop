@@ -150,4 +150,4 @@ hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
 
  ```
 
-### 11. Change the number of reducers to 2 and answer the related quiz question at the end of the video lesson
+###11. Change the number of reducers to 2 and answer the related quiz question at the end of the video lesson
