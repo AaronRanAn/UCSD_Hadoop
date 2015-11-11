@@ -60,7 +60,7 @@ Check input files: `hdfs dfs -ls /user/cloudera/input`
 (`cat` prints out the text files standard output; `|` pipes the standard output to the standard input of the `join_mapper` program, etc.. )
 
 ```
-cat join1_FileA.txt | ./join1_mapper.py | sort | ./join1_reducer.py
+cat join1_File*.txt | ./join1_mapper.py | sort | ./join1_reducer.py
 ```
 Make sure your mapper and reducer work locally before sending them to hadoop. 
 
@@ -164,6 +164,10 @@ Description: A TV show title and the channel it was shown on, for example:
 What is the total number of viewers for shows on ABC?
 
 (In pseudo-SQL it migth be something like: Select sum( viewer count) from File A, File B where FileA.TV show = FileB.TV show and FileB.Channel='ABC' grouped by TV show)
+
+After making modification to the mapper and reducer, execute the following to check if it runs fine locally:
+
+`cat join2_genchan* join2_gennum*.txt | ./join2_mapper.py | sort | ./join2_reducer.py`
 
 #### c) Upload the resulting output from the reducers, use numReduceTasks=1
 
