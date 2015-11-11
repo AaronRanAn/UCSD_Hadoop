@@ -37,7 +37,14 @@ make sure we are in the right home dir by ```pwd```
 
 Hadoop doesn't handle unnecessary file in the dir very well. Before you move local file a and b into cluster, nuke the input directory content using:
 
-` hdfs dfs -rm /user/cloudera/input/*`
+```
+hdfs dfs -rm /user/cloudera/input/*
+
+#or if you want to remove dir:
+
+hdfs dfs -rmdir /user/cloudera/output_join
+```
+
 
 then: (otherwise your mapreduce job will failed.)
 
@@ -53,9 +60,10 @@ Check input files: `hdfs dfs -ls /user/cloudera/input`
 (`cat` prints out the text files standard output; `|` pipes the standard output to the standard input of the `join_mapper` program, etc.. )
 
 ```
-cat join1_File*.txt | join1_mapper.py | sort | join1_reducer.py
-# can't get this to work
+cat join1_FileA.txt | ./join1_mapper.py | sort | ./join1_reducer.py
 ```
+Make sure your mapper and reducer work locally before sending them to hadoop. 
+
 
 To debug programs in serial execution one should use small datasets and possibly extra print statements in the program. Debugging with map/reduce is harder but hopefully not necessary for this assignment, but see the –..debug option in the streaming command, which will help view standard input/output/error from the map/reduce functions.
 
@@ -73,29 +81,50 @@ the mapper and reducer python file is in the local file, the data is in the clus
 
 This is called streaming, and note `-reducer /home/cloudera/wordcount_reducer.py` is the reducer count.
 
+After the mapreduce in the hadoop, do a `-cat` on your results. 
+
+`hdfs dfs -cat /user/cloudera/output_join/part-00000` and get results:
+
+> Dec-15 able 100 991
+
+> Apr-04 able 13 991	
+
+> Jan-01 able 5 991	
+
+> Mar-03 about 8 11	
+
+> Feb-02 about 3 11	
+
+> Feb-22 actor 3 22	
+
+> Feb-23 burger 5 15	
+
+> Mar-08 burger 2 15	
+
 ### 5. A new join problem:
 
 #### a)First generate some datasets using the scripts (see below) as follows:
 
 ```
 sh make_data_join2.txt
+```
 
 (this is a script that produces 6 files:
 
-python make_join2data.py y 1000 13 > join2_gennumA.txt
+`python make_join2data.py y 1000 13 > join2_gennumA.txt`
 
-python make_join2data.py y 2000 17 > join2_gennumB.txt
+`python make_join2data.py y 2000 17 > join2_gennumB.txt`
 
 …)
-```
 
 Use HDFS commands to copy all 6 files into one HDFS directory, just like step2 above and in the wordcount assignment.
+
 
 Note: These datasets are pseudo-randomly generated so all output is the same for any environment. **The file are not large but big enough to make solving the assignment by hand time consuming.** One could put the data in a database but that would defeat the assignment purpose!
 
 #### b)The datasets generated in a) have the following information:
 
-`join2_gennum*.txt consist of: <TV show, count>`
+> join2_gennum*.txt consist of: <TV show, count>
 
 Description: A TV show title (or maybe its a TV show genre) and a count of how many viewers saw that show, for example:
 
@@ -113,7 +142,8 @@ Description: A TV show title (or maybe its a TV show genre) and a count of how m
 
 > Dumb_Games,60
 
-`join2_genchan*.txt consists of: <TV show title, channel>`
+
+> join2_genchan*.txt consists of: <TV show title, channel>
 
 Description: A TV show title and the channel it was shown on, for example:
 
