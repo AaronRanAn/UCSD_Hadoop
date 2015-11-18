@@ -1,5 +1,7 @@
 ## Assignment 2: Joining data with streaming in Python
 
+This is the second assignment for week 4.
+
 In Lesson 2 of the Introduction to Map/Reduce module the Join task was described.
 
 In this assignment, first you are given a Python mapper and reducer to perform the Join described in the video (3rd video of lesson).
